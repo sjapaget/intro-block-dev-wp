@@ -14,13 +14,18 @@ import { __ } from '@wordpress/i18n';
 import {
   useBlockProps,
   RichText,
-  InspectorControls
+  InspectorControls,
+  PanelColorSettings
 } from '@wordpress/block-editor';
 
 import {
+  PanelBody,
   RangeControl,
-  PanelBody
+  SelectControl
 } from '@wordpress/components'
+
+import NumberControl from './components/number-control';
+
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -38,9 +43,23 @@ import './editor.scss';
  * @return {WPElement} Element to render.
  */
 export default function Edit( { attributes, setAttributes }) {
-  
-  const { columnCount } = attributes;
-  const columnStyles = { columnCount };
+
+  const {
+    columnCount,
+    columnWidth,
+    columnGap,
+    columnRuleStyle,
+    columnRuleWidth,
+    columnRuleColor
+  } = attributes;
+  const columnStyles = {
+    columnCount,
+    columnWidth,
+    columnGap,
+    columnRuleStyle,
+    columnRuleWidth,
+    columnRuleColor
+  };
 
   const onChangeContent =( val ) => {
     setAttributes( { content: val } )
@@ -50,10 +69,30 @@ export default function Edit( { attributes, setAttributes }) {
     setAttributes( { columnCount: val } )
   }
 
+  const onChangeColumnWidth = ( val ) => {
+    setAttributes( { columnWidth: Number(val) } )
+  }
+
+  const onChangeColumnGap = ( val ) => {
+    setAttributes( { columnGap: Number(val) } )
+  }
+
+  const onChangeColumnRuleStyle = ( val ) => {
+    setAttributes( { columnRuleStyle: val } )
+  }
+
+  const onChangeColumnRuleWidth = ( val ) => {
+    setAttributes( { columnRuleWidth: Number(val) } )
+  }
+
+  const onChangeColumnRuleColor = ( val ) => {
+    setAttributes( { columnRuleColor: val } )
+  }
+
 	return (
     <>
       <InspectorControls>
-        <PanelBody>
+        <PanelBody title='Column Settings'>
           <RangeControl
             label="Columns"
             value={ columnCount }
@@ -61,8 +100,81 @@ export default function Edit( { attributes, setAttributes }) {
             min={ 2 }
             max={ 6 }
           />
+          <NumberControl
+            label="Width"
+            value={ columnWidth }
+            onChange={ onChangeColumnWidth }
+            min={ 120 }
+            max={ 500 }
+            step={ 10 }
+          />
+          <NumberControl
+            label="Gap"
+            value={ columnGap }
+            onChange={ onChangeColumnGap }
+            min={10}
+            max={100}
+          />
         </PanelBody>
+        <PanelBody
+          title="Column Separator"
+          initialOpen={ false }
+        >
+          <SelectControl
+            label="Separator Style"
+            onChange={ onChangeColumnRuleStyle }
+            options={ [
+                {
+                  label: 'None',
+                  value: 'none',
+                },
+                {
+                  label: 'Solid',
+                  value: 'solid',
+                },
+                {
+                  label: 'Dotted',
+                  value: 'dotted'
+                },
+                {
+                label: 'Dashed',
+                value: 'dashed',
+                },
+                {
+                  label: 'Double',
+                  value: 'double',
+                },
+                {
+                  label: 'Groove',
+                  value: 'groove',
+                },
+                {
+                  label: 'Ridge',
+                  value: 'ridge',
+                },
+            ] }
+          />
+          <NumberControl
+            label="Rule Width"
+            value={ columnRuleWidth }
+            onChange={ onChangeColumnRuleWidth }
+            min={1}
+            max={10}
+          />
+        </PanelBody>
+        <PanelColorSettings
+          title="Colour Settings"
+          initialOpen={ false }
+          colorSettings={ [
+              {
+                label: 'Separator Colour',
+                value: columnRuleColor,
+                onChange: onChangeColumnRuleColor,
+              },
+          ] }
+        />
       </InspectorControls>
+
       <RichText
         { ...useBlockProps( { style: columnStyles } ) }
         tagName="div"

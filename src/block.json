@@ -51,6 +51,26 @@
     "columnCount": {
       "type": "integer",
       "default": 4
+    },
+    "columnWidth": {
+      "type": "integer",
+      "default": 200
+    },
+    "columnGap": {
+      "type": "integer",
+      "default": 40
+    },
+    "columnRuleStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "columnRuleWidth": {
+      "type": "integer",
+      "default": 1
+    },
+    "columnRuleColor": {
+      "type": "string",
+      "default": "#b8b8b8"
     }
   }
 }
