@@ -6,7 +6,21 @@
  */
 
 .wp-block-create-block-multi-columns {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+	box-sizing: border-box;
+  column-fill: balance;
+
+  &.is-style-drop-cap {
+    p:first-of-type:first-letter {
+      color: var(--drop-cap-color);
+      float: left;
+      font-size: var(--drop-cap-font-size);
+      line-height: var(--drop-cap-line-height);
+      padding-right: 0.33rem;
+    }
+  }
+
+  &.is-style-box-shadow {
+    box-shadow: var(--box-shadow-offset-x) var(--box-shadow-offset-y) var(--box-shadow-blur-radius) var(--box-shadow-color);
+  }
+
 }

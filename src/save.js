@@ -4,7 +4,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * The save function defines the way in which the different attributes should
@@ -23,7 +23,11 @@ export default function save( { attributes } ) {
     columnGap,
     columnRuleStyle,
     columnRuleWidth,
-    columnRuleColor
+    columnRuleColor,
+    dropCapColor,
+    dropCapSize,
+    boxShadow,
+    boxShadowColor
   } = attributes;
   const columnStyles = {
     columnCount,
@@ -31,14 +35,19 @@ export default function save( { attributes } ) {
     columnGap,
     columnRuleStyle,
     columnRuleWidth,
-    columnRuleColor
+    columnRuleColor,
+    '--drop-cap-color': dropCapColor,
+    '--drop-cap-font-size': dropCapSize.fontSize,
+    '--drop-cap-line-height': dropCapSize.lineHeight,
+    '--box-shadow-offset-x': boxShadow.offsetX,
+    '--box-shadow-offset-y': boxShadow.offsetY,
+    '--box-shadow-blur-radius': boxShadow.blurRadius,
+    '--box-shadow-color': boxShadowColor,
   };
 
 	return (
-		<RichText.Content
-      { ...useBlockProps.save( { style: columnStyles } ) }
-			tagName="div"
-      value={ attributes.content }
-		/>
+		<div { ...useBlockProps.save( { style: columnStyles } ) } >
+      <InnerBlocks.Content />
+		</div>
 	);
 }
