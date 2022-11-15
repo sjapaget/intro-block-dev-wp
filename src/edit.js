@@ -184,6 +184,45 @@ export default function Edit( { attributes, setAttributes }) {
     setAttributes( { boxShadowColor: val } )
   }
 
+  const colorSettingsDropDown = () => {
+    switch (attributes.className) {
+      case "is-style-drop-cap":
+        return [
+          {
+            value: columnRuleColor,
+            onChange: onChangeColumnRuleColor,
+            label: __( 'Separator colour', 'multi-columns' ),
+        },
+        {
+            value: dropCapColor,
+            onChange: onChangeDropCapColor,
+            label: __( 'Drop Capital Colour', 'multi-columns' ),
+        },
+      ]
+      case 'is-style-box-shadow':
+        return [
+          {
+            value: columnRuleColor,
+            onChange: onChangeColumnRuleColor,
+            label: __( 'Separator Colour', 'multi-columns' ),
+        },
+        {
+            value: boxShadowColor,
+            onChange: onChangeBoxShadowColor,
+            label: __( 'Box Shadow Colour', 'multi-columns' ),
+        },
+        ]
+        default:
+          return [
+            {
+              value: columnRuleColor,
+              onChange: onChangeColumnRuleColor,
+              label: __( 'Separator Colour', 'multi-columns' ),
+          },
+        ]
+    }
+  }
+
 	return (
     <>
       <InspectorControls>
@@ -257,7 +296,8 @@ export default function Edit( { attributes, setAttributes }) {
             max={10}
           />
         </PanelBody>
-        <PanelBody title={ __('Drop-Cap', 'multi-column') } initialOpen={ false }>
+
+        { attributes.className === "is-style-drop-cap" && <PanelBody title={ __('Drop-Cap', 'multi-column') } initialOpen={ false }>
           <SelectControl
             label={ __('Size', 'multi-column') }
             onChange={ onChangeDropCapSize }
@@ -273,8 +313,9 @@ export default function Edit( { attributes, setAttributes }) {
               }
             ] }
           />
-        </PanelBody>
-        <PanelBody title={ __('Box-Shadow', 'multi-columns') } initialOpen={ false }>
+        </PanelBody> }
+
+        { attributes.className === "is-style-box-shadow" && <PanelBody title={ __('Box-Shadow', 'multi-columns') } initialOpen={ false }>
           <SelectControl
             label={ __( 'Style', 'multi-column' ) }
             onChange={ onChangeBoxShadow }
@@ -290,27 +331,11 @@ export default function Edit( { attributes, setAttributes }) {
               }
             ] }
           />
-        </PanelBody>
+        </PanelBody>}
         <PanelColorSettings
           title={ __( 'Colour Settings', 'multi-columns' ) }
           initialOpen={ false }
-          colorSettings={ [
-              {
-                label: __('Separator Colour', "multi-columns"),
-                value: columnRuleColor,
-                onChange: onChangeColumnRuleColor,
-              },
-              {
-                label: __( 'Drop-Cap Colour', "multi-columns" ),
-                value: dropCapColor,
-                onChange: onChangeDropCapColor
-              },
-              {
-                label: __( 'Box-Shadow Colour', 'multi-columns' ),
-                value: boxShadowColor,
-                onChange: onChangeBoxShadowColor
-              }
-          ] }
+          colorSettings={ colorSettingsDropDown() }
         />
       </InspectorControls>
 
